@@ -6,6 +6,12 @@ export default class ARAssistant extends Component {
     viewingCoffeeMaker: 'none'
   }
 
+  static navigationOptions = () => {
+    return {
+      header: null
+    }
+  };
+
   showMessage = () => {
     this.setState({
       viewingCoffeeMaker: 'flex'

@@ -84,7 +84,7 @@ export default class Home extends Component {
           icon={require('../assets/question.png')}
           headerText="I Need Help"
           subheaderText="Have a problem? Identify what's wrong so we can connect you with the right agent."
-          onPressTile={() => null}
+          onPressTile={() => navigate('GoesInArKit')}
         />
         <HomeTile 
           icon={require('../assets/bookmark.png')}
