@@ -28,7 +28,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    borderRadius: 22,
+    marginHorizontal: 20,
+    marginVertical: 15
   },
   searchBarText: {
     color: '#707070',
@@ -74,19 +77,19 @@ export default class Home extends Component {
           <Icon name="ios-mic"  style={styles.icon}/>
         </View>
         <View style={styles.headerTextWrapper}> 
-          <Text style={styles.headerText}>Support</Text>
-          <Text style={styles.subheaderText}>Have a problem? Help us identify what's wrong so we can connect you with your own personalized agent.</Text>
+          <Text style={styles.headerText}>My Account</Text>
+          <Text style={styles.subheaderText}>Hello, Justin. This is your personalized dashboard.</Text>
         </View>
         <HomeTile 
           icon={require('../assets/question.png')}
           headerText="I Need Help"
-          subheaderText="Troubleshooting? Something went wrong?"
+          subheaderText="Have a problem? Identify what's wrong so we can connect you with the right agent."
           onPressTile={() => null}
         />
         <HomeTile 
-          icon={require('../assets/user-with-headset.png')}
-          headerText="Speak to an Agent"
-          subheaderText="Can't fix your problem? Connect to an agent to help you out."
+          icon={require('../assets/bookmark.png')}
+          headerText="FAQ"
+          subheaderText="Got a question? Here's some articles that might help!!"
           onPressTile={() => null}
         />
         <HomeTile 
@@ -94,6 +97,12 @@ export default class Home extends Component {
           headerText="AR Assistant"
           subheaderText="Use your camera to help diagnose your issue and solve it."
           onPressTile={() => navigate('ARAssistant')}
+        />
+        <HomeTile 
+          icon={require('../assets/settings.png')}
+          headerText="Settings"
+          subheaderText="View your call log, rewards and promotional offers, switch accounts, and more."
+          onPressTile={() => null}
         />
       </View>
     );
