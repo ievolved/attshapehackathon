@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
 import CameraOverlay from '../components/CameraOverlay';
-
-const styles = StyleSheet.create({
-
-});
 
 const steps = [
   "Lift open Coffee Maker lid. Fill carafe with cold tap water and pour water into water reservoir at back of unit.",
@@ -19,8 +14,8 @@ export default class GoesInArKit extends Component {
   state = {
     detectionHeader: "Focus your camera at an object.",
     displayCheckMark: false,
-    //currentAndNextStep should be initialized to null
-    //currentAndNextStep: null,
+    //IMPORTANT***** currentAndNextStep should be initialized to null
+    //the below array set to currentAndNextStep should be set once the object is detected
     currentAndNextStep: [ {number: 1 , text: steps[0] }, {number: 2, text: steps[1]} ]
   }
   static navigationOptions = () => {
@@ -29,40 +24,48 @@ export default class GoesInArKit extends Component {
     }
   };
 
-  onPressBack = () => {
-    const { currentAndNextStep } = this.state;
-    if (currentAndNextStep) {
-
+  onPressBack = ([ currentStep ]) => {
+    if (currentStep.number > 1) {
+      const oldCurrentStep = currentStep;
+      const newCurrentStepNumber = oldCurrentStep.number - 1;
+      const newCurrentStep = {number: newCurrentStepNumber, text: steps[newCurrentStepNumber - 1] };
+      this.setState({
+        currentAndNextStep: [ newCurrentStep, oldCurrentStep ]
+      })
+    } else {
+      //Go back to Home
+      const { navigation } = this.props;
+      navigation.goBack(null);
     }
-
-    //Go back to Home
-    const { navigation } = this.props;
-    navigation.goBack(null);
   }
 
   onPressNext = () => {
-    const { currentAndNextStep } = this.state;
-    const oldNextStep = currentAndNextStep[1];
+    const { currentAndNextStep: [ , nextStep]} = this.state;
+    const oldNextStep = nextStep;
     const newNextStepNumber = oldNextStep.number + 1;
-    const newNextStepIndex = oldNextStep.number;
+    let newNextStep;
+    if (newNextStepNumber > steps.length) {
+      newNextStep = { number: null, text: null};
+    } else {
+      newNextStep = { number: newNextStepNumber, text: steps[newNextStepNumber - 1] };
+    }
     this.setState({
-      currentAndNextStep: [ oldNextStep, { number: newNextStepNumber, text: steps[newNextStepIndex] }]
+      currentAndNextStep: [ oldNextStep, newNextStep ]
     })
-
   }
 
   render() {
     const { detectionHeader, displayCheckMark, currentAndNextStep } = this.state;
-    
+    const { navigation } = this.props;
+
     return (
       <CameraOverlay 
         detectionHeader={detectionHeader}
         displayCheckMark={displayCheckMark}
-        onPressBack={this.onPressBack}
+        onPressBack={() => currentAndNextStep ? this.onPressBack(currentAndNextStep) : navigation.goBack(null)}
         currentAndNextStep={currentAndNextStep}
         onPressNext={this.onPressNext}
       />
-
     );
   }
 }

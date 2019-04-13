@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 15
   },
-  nextButton: {
+  nextAndDoneButton: {
     width: 67,
     height: 67,
     backgroundColor: 'white',
@@ -65,18 +65,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 30
   },
-  nextButtonText: {
+  nextAndDoneButtonText: {
     fontSize: 18,
     fontFamily: 'HelveticaNeue-Medium',
   }
 });
 
-const maybeDisplaySteps = (currentAndNextStep) => {
-  if (currentAndNextStep) {
-    const currentStep = currentAndNextStep[0];
-    const nextStep = currentAndNextStep[1];
+const displaySteps = (currentAndNextStep) => {
+  const [ currentStep, nextStep ] = currentAndNextStep;
 
-    const nextStepText =  () => {
+  const nextStepText =  () => {
+    if (nextStep.text) { 
       const words = nextStep.text.split(" ");
       let returnText = "";
       let charCount = 0;
@@ -88,55 +87,63 @@ const maybeDisplaySteps = (currentAndNextStep) => {
       })
       return returnText.slice(0, -1) + "...";
     }
+    return null;
+  }
 
-    return (
-      <View style={{marginTop: 30, marginLeft: 20}}>
-        <View style={styles.stepWrapper}>
-          <View style={styles.labelWrapper}>
-            <Text style={styles.stepLabel}>{`Step ${currentStep.number}`}</Text>
-          </View>
-          <Text style={styles.currentStep}>{currentStep.text}</Text>
+  return (
+    <View style={{marginTop: 30, marginLeft: 20}}>
+      <View style={styles.stepWrapper}>
+        <View style={styles.labelWrapper}>
+          <Text style={styles.stepLabel}>{`Step ${currentStep.number}`}</Text>
         </View>
-        <View style={styles.stepWrapper}>
-          <View style={styles.labelWrapper}>
-            <Text style={styles.stepLabel}>Next</Text>
-          </View>
-          <Text style={styles.nextStep}>{nextStepText()}</Text>
-        </View>
+        <Text style={styles.currentStep}>{currentStep.text}</Text>
       </View>
+      <View style={styles.stepWrapper}>
+        <View style={styles.labelWrapper}>
+          <Text style={styles.stepLabel}>{nextStep.number ? "Next" : "Done!"}</Text>
+        </View>
+        <Text style={styles.nextStep}>{nextStepText()}</Text>
+      </View>
+    </View>
 
-    )
-  }
-
-  return null;
+  )
 }
 
-maybeDisplayNextButton = (props) => {
-  if (props.currentAndNextStep) {
-    return (
-      <TouchableOpacity style={styles.nextButton} onPress={props.onPressNext}>
-        <Text style={styles.nextButtonText}>Next</Text>
-      </TouchableOpacity>
-    )
-    
+displayNextOrDoneButton = (currentAndNextStep, onPressNext) => {
+  const [ currentStep, nextStep ] = currentAndNextStep;
+  let buttonText;
+  let onPress; 
+  if (currentStep && nextStep.number) {
+    buttonText = "Next";
+    onPress = onPressNext;
+  } else if (currentStep) {
+    buttonText = "Done"
+    //Will want to set an onPress for Done when it is decided what should happen
+    //(and therefore pass in  onPressDone as a param)
+  } else {
+    return null;
   }
-  return null;
+  return (
+    <TouchableOpacity style={styles.nextAndDoneButton} onPress={onPress}>
+      <Text style={styles.nextAndDoneButtonText}>{buttonText}</Text>
+    </TouchableOpacity>
+  )
 }
 
-export default (props) => (
+export default ({ currentAndNextStep, onPressBack, detectionHeader, displayCheckMark, onPressNext }) => (
   <View style={styles.container}>
-    <View style={{width: '100%', backgroundColor: props.currentAndNextStep ? 'rgba(52, 52, 52, 0.3)' : null}}>
+    <View style={{width: '100%', backgroundColor: currentAndNextStep ? 'rgba(52, 52, 52, 0.3)' : null}}>
       <View style={styles.topIconsWrapper}>
-        <TouchableOpacity onPress={props.onPressBack}>
+        <TouchableOpacity onPress={onPressBack}>
           <Image source={require('../assets/ar-camera/left-arrow.png')} />
         </TouchableOpacity>
         <Image source={require('../assets/ar-camera/camera.png')} />
         <Image source={require('../assets/ar-camera/question-white.png')} />
       </View>
-      {props.currentAndNextStep ? null : <Text style={styles.detectionHeader}>{props.detectionHeader}</Text>}
-      {maybeDisplaySteps(props.currentAndNextStep)}
+      {currentAndNextStep ? null : <Text style={styles.detectionHeader}>{detectionHeader}</Text>}
+      {currentAndNextStep ? displaySteps(currentAndNextStep) : null}
     </View>
-    {props.displayCheckMark ?  <Image style={styles.checkmark} source={require('../assets/ar-camera/check.png')} /> : null }
-    {maybeDisplayNextButton(props)}
+    {displayCheckMark ?  <Image style={styles.checkmark} source={require('../assets/ar-camera/check.png')} /> : null }
+    {currentAndNextStep ? displayNextOrDoneButton(currentAndNextStep, onPressNext) : null}
   </View> 
 );
