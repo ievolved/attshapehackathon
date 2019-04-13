@@ -19,6 +19,8 @@ export default class GoesInArKit extends Component {
   state = {
     detectionHeader: "Focus your camera at an object.",
     displayCheckMark: false,
+    //currentAndNextStep should be initialized to null
+    //currentAndNextStep: null,
     currentAndNextStep: [ {number: 1 , text: steps[0] }, {number: 2, text: steps[1]} ]
   }
   static navigationOptions = () => {
@@ -38,6 +40,17 @@ export default class GoesInArKit extends Component {
     navigation.goBack(null);
   }
 
+  onPressNext = () => {
+    const { currentAndNextStep } = this.state;
+    const oldNextStep = currentAndNextStep[1];
+    const newNextStepNumber = oldNextStep.number + 1;
+    const newNextStepIndex = oldNextStep.number;
+    this.setState({
+      currentAndNextStep: [ oldNextStep, { number: newNextStepNumber, text: steps[newNextStepIndex] }]
+    })
+
+  }
+
   render() {
     const { detectionHeader, displayCheckMark, currentAndNextStep } = this.state;
     
@@ -47,6 +60,7 @@ export default class GoesInArKit extends Component {
         displayCheckMark={displayCheckMark}
         onPressBack={this.onPressBack}
         currentAndNextStep={currentAndNextStep}
+        onPressNext={this.onPressNext}
       />
 
     );

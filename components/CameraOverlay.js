@@ -5,7 +5,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   topIconsWrapper: {
     flexDirection: 'row',
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   checkmark: {
-    marginTop: 250
+    marginBottom: 200
   },
   currentStep: {
     fontFamily: 'HelveticaNeue-Bold',
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   stepLabel: {
-    color: 'red',
+    color: '#b7b7b7',
     fontSize: 16
   },
   labelWrapper: {
@@ -54,6 +55,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 15
+  },
+  nextButton: {
+    width: 67,
+    height: 67,
+    backgroundColor: 'white',
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 30
+  },
+  nextButtonText: {
+    fontSize: 18,
+    fontFamily: 'HelveticaNeue-Medium',
   }
 });
 
@@ -97,10 +111,21 @@ const maybeDisplaySteps = (currentAndNextStep) => {
   return null;
 }
 
+maybeDisplayNextButton = (props) => {
+  if (props.currentAndNextStep) {
+    return (
+      <TouchableOpacity style={styles.nextButton} onPress={props.onPressNext}>
+        <Text style={styles.nextButtonText}>Next</Text>
+      </TouchableOpacity>
+    )
+    
+  }
+  return null;
+}
 
 export default (props) => (
   <View style={styles.container}>
-    <View style={{width: '100%'}}>
+    <View style={{width: '100%', backgroundColor: props.currentAndNextStep ? 'rgba(52, 52, 52, 0.3)' : null}}>
       <View style={styles.topIconsWrapper}>
         <TouchableOpacity onPress={props.onPressBack}>
           <Image source={require('../assets/ar-camera/left-arrow.png')} />
@@ -112,6 +137,6 @@ export default (props) => (
       {maybeDisplaySteps(props.currentAndNextStep)}
     </View>
     {props.displayCheckMark ?  <Image style={styles.checkmark} source={require('../assets/ar-camera/check.png')} /> : null }
-
+    {maybeDisplayNextButton(props)}
   </View> 
 );
