@@ -40,7 +40,7 @@ class StatusManager {
   }
 
   setErrors(value) {
-    //this.setOK();
+    this.setOK();
 
     if (value.BadFilter === true) {
       this.error |= errorType.BadFilter[code];
@@ -130,12 +130,12 @@ class StatusManager {
       errors.push( [errorType.LidJammed[code], errorType.LidJammed[text]] );
     }
 
-    if (result & errorType.Water[code]) {
-      errors.push( [errorType.Water[code], errorType.Water[text]] );
-    }
-
     if (result & errorType.Heat[code]) {
       errors.push( [errorType.Heat[code], errorType.Heat[text]] );
+    }
+
+    if (result & errorType.Water[code]) {
+      errors.push( [errorType.Water[code], errorType.Water[text]] );
     }
 
     return errors;
