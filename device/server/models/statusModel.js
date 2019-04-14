@@ -12,15 +12,15 @@ let statusType = {
 
 
 let errorType = {
-  OK:               [0b000000000000, "OK"],
-  Unknown:          [0b100000000000, "Unknown Problem."],
-  BadFilter:        [0b000000000001, "Please replace filter."],
-  GrindOverflow:    [0b000000000010, "Please reduce the amount of coffee grind."],
-  PowerSupply:      [0b000000000100, "Something is wrong with the power."],
-  GoTPlaying:       [0b000000001000, "Game of Thrones is on, I'm in do not disturb mode."],
-  LidJammed:        [0b000000010000, "Check the lid."],
-  Heat:             [0b000000100000, "Unable to heat."],
-  Water:            [0b000001000000, "Has water, but clogged or unable to draw from."]
+  OK:               [0b00000000, "OK"],
+  Unknown:          [0b10000000, "Unknown Problem."],
+  BadFilter:        [0b00000001, "Please replace filter."],
+  GrindOverflow:    [0b00000010, "Please reduce the amount of coffee grind."],
+  PowerSupply:      [0b00000100, "Something is wrong with the power."],
+  GoTPlaying:       [0b00001000, "Game of Thrones is on, I'm in do not disturb mode."],
+  LidJammed:        [0b00010000, "Check the lid."],
+  Heat:             [0b00100000, "Unable to heat."],
+  Water:            [0b01000000, "Has water, but clogged or unable to draw from."]
 };
 
 const code = 0;
