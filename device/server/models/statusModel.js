@@ -1,11 +1,11 @@
 
 
 let statusType = {
-  HasPower:         [false, "On", "Off"],
+  HasPower:         [true, "On", "Off"],
   Brewing:          [false, "Yes", "No"],
-  HasGrind:         [false, "Detected", "No"],
+  HasGrind:         [true, "Detected", "No"],
   HasFilter:        [false, "Yes", "No"],
-  HasHeat:          [false, "Yes", "No"],
+  HasHeat:          [true, "Yes", "No"],
   HasWater:         [false, "Yes", "No"],
   Errors:           []
 };
